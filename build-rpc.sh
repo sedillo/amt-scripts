@@ -1,20 +1,11 @@
 #!/bin/bash
 
-#Install docker
-cd /opt
-mkdir -p /opt/amt-docker
-cd /opt/amt-docker
-git clone https://github.com/open-amt-cloud-toolkit/mps.git
-git clone https://github.com/open-amt-cloud-toolkit/rps.git
+sudo apt-get -y update 
+sudo apt install -y git cmake build-essential libboost-system-dev libboost-thread-dev libboost-random-dev libboost-regex-dev  libboost-filesystem-dev libssl-dev zlib1g-dev
 
-#Build mps/rps
-cd /opt/amt-docker/rps
-docker build -t rps-microservice:v1 .
-cd /opt/amt-docker/mps
-docker build -t mps-microservice:v1 .
+git clone https://github.com/open-amt-cloud-toolkit/rpc.git && cd rpc
 
-#compose
-cd /opt/amt-docker/mps/scripts/docker-compose
-cp .env.template .env
-sed -i 's/G@ppm0ym/P@ssw0rd/g' .env
-sed -i 's/localhost/192.168.17.42/g' .env
+mkdir build && cd build
+cmake -DCMAKE_BUILD_TYPE=Debug ..
+cmake --build .
+
